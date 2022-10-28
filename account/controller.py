@@ -96,6 +96,7 @@ def login_user(request, paylod: AccountLoginBody):
 
 @account_router.get('/forget-password', response={200: MessageOut, codes_4xx: MessageOut})
 def password_reset_email(request, email: EmailStr):
+    
     try:
         user = User.objects.get(email__iexact=email)
         otp = Otp.objects.create(user=user)
