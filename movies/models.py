@@ -108,3 +108,6 @@ class Actor(Entity):
     movies = models.ManyToManyField(Movie, related_name='actors', blank=True)
     series = models.ManyToManyField(Serial, related_name='actors', blank=True)
     episodes = models.ManyToManyField(Episode, related_name='guest_actors', blank=True)
+
+    def __str__(self):
+        return self.name
