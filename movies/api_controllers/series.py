@@ -1,7 +1,7 @@
 from ninja import Router
 from pydantic.types import UUID4
 from account.authorization import TokenAuthentication
-from movies.models import Episode, Season, Serial
+from movies.models import Episode, Season, Serial,Category
 from movies.schemas.series import SerialOut
 from movies.schemas.general import MessageOut
 
@@ -22,7 +22,7 @@ def featured_serial(request):
         return 200, serial
     return 404, {'msg': 'There are no featured serial.'}
 
-@serials_router.get('/{id}', response={200: SerialOut, 404: MessageOut})
+@serials_router.get('/{id}', response={200: list[SerialOut], 404: MessageOut})
 def get_serial(request, id: UUID4):
     try:
         serial = Serial.objects.get(id=id)
@@ -30,33 +30,33 @@ def get_serial(request, id: UUID4):
     except Serial.DoesNotExist:
         return 404, {'msg': 'There is no serial with that id.'}
     
-@serials_router.get('/{id}/season', response={200: SerialOut, 404: MessageOut})
+@serials_router.get('/{id}/season', response={200: list[SerialOut], 404: MessageOut})
 def get_serial(request, id: UUID4):
     try:
         serial = Serial.objects.get(id=id)
-        serial = Season.objects.get(id=serial)
+        serial = Season.objects.all()
         return 200, serial
     except Serial.DoesNotExist:
         return 404, {'msg': 'There is no serial with that id.'}
     
-@serials_router.get('/{id}/season/{id}/episodes', response={200: SerialOut, 404: MessageOut})
+@serials_router.get('/{id}/season/{id1}/episodes', response={200: list[SerialOut], 404: MessageOut})
 def get_serial(request, id: UUID4):
     try:
         serial = Serial.objects.get(id=id)
-        serial = Season.objects.get()
+        serial = Season.objects.all()
         serial = Season.objects.get(id=serial)
-        serial = Episode.objects.get()
+        serial = Episode.objects.all()
         return 200, serial
     except Serial.DoesNotExist:
         return 404, {'msg': 'There is no serial with that id.'}
 
-@serials_router.get('/{id}/season/{id}/episodes/{id}', response={200: SerialOut, 404: MessageOut})
+@serials_router.get('/{id}/season/{id1}/episodes/{id2}', response={200:list[SerialOut], 404: MessageOut})
 def get_serial(request, id: UUID4):
     try:
         serial = Serial.objects.get(id=id)
-        serial = Season.objects.get()
+        serial = Season.objects.all()
         serial = Season.objects.get(id=serial)
-        serial = Episode.objects.get()
+        serial = Episode.objects.all()
         serial = Episode.objects.get(id=serial)
         return 200, serial
     except Serial.DoesNotExist:

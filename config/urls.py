@@ -7,6 +7,7 @@ from movies.api_controllers.series import serials_router
 from movies.api_controllers.news import news_router
 api = NinjaAPI()
 api.add_router('account/', account_router)
+api.add_router('series/', serials_router)
 api.add_router('movies/', movies_router)
 api.add_router('news/', news_router)
 

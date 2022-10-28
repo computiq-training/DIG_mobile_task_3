@@ -1,8 +1,8 @@
 from ninja import Schema
 import datetime
-
 from pydantic.types import Decimal, UUID4, Optional
 from pydantic import Field
+
 
 
 class MovieOut(Schema):
@@ -11,6 +11,6 @@ class MovieOut(Schema):
     description: str
     image: str = None
     thumbnail: str = None
-    trailer_url: Optional = str
+    trailer_url:  str= None
     release_date: datetime.date
     rating: Decimal

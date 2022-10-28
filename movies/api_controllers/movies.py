@@ -4,6 +4,7 @@ from account.authorization import TokenAuthentication
 from movies.models import Movie
 from movies.schemas.movies import MovieOut
 from movies.schemas.general import MessageOut
+
 movies_router = Router(tags=['Movies'])
 
 
