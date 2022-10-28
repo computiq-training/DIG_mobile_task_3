@@ -1,6 +1,5 @@
 from ninja import Router
 from pydantic.types import UUID4
-
 from account.authorization import TokenAuthentication
 from movies.models import Movie
 from movies.schemas.movies import MovieOut
