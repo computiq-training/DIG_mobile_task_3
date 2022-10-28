@@ -1,12 +1,12 @@
 from ninja import Router
 from pydantic.types import UUID4
-
 from account.authorization import TokenAuthentication
 from movies.models import Movie
 from movies.schemas.movies import MovieOut
 from movies.schemas.general import MessageOut
 
 movies_router = Router(tags=['Movies'])
+
 
 
 @movies_router.get('', response={200: list[MovieOut], 404: MessageOut})
