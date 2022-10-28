@@ -49,7 +49,7 @@ class Movie(CommonDetail):
 class Serial(CommonDetail):
     is_featured = models.BooleanField(default=False)
     categories = models.ManyToManyField(Category, related_name='series')
-    image = models.URLField(null=True)
+    image = models.URLField(null=True, blank = True)
     thumbnail = models.URLField(null=True, editable=False)
     user = models.ManyToManyField(User, related_name='favorite_series', blank=True)
 
@@ -96,7 +96,7 @@ class New(Entity):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField(db_column='date')
-    image = models.URLField(unique=True, null=True)
+    image = models.URLField(unique=True, null=True, blank = True)
 
     def __str__(self):
         return self.title
@@ -104,7 +104,7 @@ class New(Entity):
 
 class Actor(Entity):
     name = models.CharField(max_length=50)
-    image = models.URLField(null=True)
+    image = models.URLField(null=True , blank= True)
     movies = models.ManyToManyField(Movie, related_name='actors', blank=True)
     series = models.ManyToManyField(Serial, related_name='actors', blank=True)
     episodes = models.ManyToManyField(Episode, related_name='guest_actors', blank=True)
