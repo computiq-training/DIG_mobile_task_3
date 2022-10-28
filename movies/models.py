@@ -15,7 +15,8 @@ class Category(Entity):
     name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return f'{self.id}||{self.name}'
+    
 
 
 class CommonDetail(Entity):
@@ -108,3 +109,5 @@ class Actor(Entity):
     movies = models.ManyToManyField(Movie, related_name='actors', blank=True)
     series = models.ManyToManyField(Serial, related_name='actors', blank=True)
     episodes = models.ManyToManyField(Episode, related_name='guest_actors', blank=True)
+    def __str__(self):
+        return f'{self.id}||{self.name}||{self.image}'
