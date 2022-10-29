@@ -48,8 +48,9 @@ def featured_series(request):
 @series_router.get('/{id}/seasons', response={200: List[SeasonsOut], 404: MessageOut})
 def get_seasons(request, id: UUID4):
     try:
-        season = Season.objects.get(id=id)
-        return 200, season
+        serial = Season.objects.get(id=id)
+        seasons = serial.seasons.all().order_by('number')
+        return 200, seasons
     except Season.DoesNotExist:
         return 404, {'msg': 'There is no seasons serial with that id.'}
 
@@ -57,23 +58,28 @@ def get_seasons(request, id: UUID4):
  # Method Get episodes by Id of Serial and Id of Seasons
 
 @series_router.get('/{id}/seasons/{id}/episodes', response={200: List[EpisodesOut], 404: MessageOut})
-def get_episodes(request, id: UUID4):
+def get_episodes(request,  serial_id: UUID4, season_id: UUID4):
     try:
-        episodes = Episode.objects.get(id=id)
+        season = Season.objects.get(id=season_id, serial__id=serial_id)
+        episodes = season.episodes.all().order_by('number')
+        print(episodes)
         return 200, episodes
-    except Episode.DoesNotExist:
-        return 404, {'msg': 'There is no episodes serial with that seasons id.'}
+    except Season.DoesNotExist:
+        return 404, {'msg': 'There is no season that matches the criteria.'}
 
 
 # Method Get episodes by Id of Serial and Id of Seasons
 
 @series_router.get('/{id}/seasons/{id}/episodes/{id}', response={200: EpisodesOut, 404: MessageOut})
-def get_episodes_id(request, id: UUID4):
+def get_episodes_id(request, serial_id: UUID4, season_id: UUID4, episode_id: UUID4):
     try:
-        episodes_id = Episode.objects.get(id=id)
-        return 200, episodes_id
+        season = Season.objects.get(id=season_id, serial_id=serial_id)
+        episode = season.episodes.get(id=episode_id)
+        return 200, episode
+    except Season.DoesNotExist:
+        return 404, {'msg': 'There is no season with that id.'}
     except Episode.DoesNotExist:
-        return 404, {'msg': 'There is no episodes serial with that id.'}
+        return 404, {'msg': 'There is no episode that matches the criteria.'}
 
  # Method Search Name of Series
 
