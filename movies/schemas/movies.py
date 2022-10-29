@@ -14,3 +14,5 @@ class MovieOut(Schema):
     trailer_url: Optional = str
     release_date: datetime.date
     rating: Decimal
+
+
