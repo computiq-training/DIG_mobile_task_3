@@ -8,5 +8,4 @@ from pydantic import Field
 class EpisodesOut(Schema):
     id:UUID4
     number: int
-    serial: str
   

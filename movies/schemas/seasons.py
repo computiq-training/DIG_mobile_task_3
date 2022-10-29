@@ -5,8 +5,6 @@ from pydantic.types import Decimal, UUID4, Optional
 from pydantic import Field
 
 
-class SessonOut(Schema):
-    id:UUID4
-    number: int
-    serial: str
-  
+class SeasonOut(Schema):
+    id : UUID4
+    number : int

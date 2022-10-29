@@ -5,7 +5,7 @@ from pydantic.types import UUID4
 from account.authorization import TokenAuthentication
 from movies.models import Serial,Season,Episode
 from movies.schemas.series import SeriesOut
-from movies.schemas.seasons import SessonOut
+from movies.schemas.seasons import SeasonOut
 from movies.schemas.episodes import EpisodesOut
 from movies.schemas.general import MessageOut
 
@@ -31,42 +31,41 @@ def get_serial(request, id: UUID4):
         return 404, {'msg': 'There is no Serial with that id.'}
 
 @Serial_router.get('/featured', response={200: list[SeriesOut], 404: MessageOut})
-def featured_serial(request):
-    serial = Serial.objects.filter(is_featured=True).order_by('-rating')
-    if serial:
-        return 200, serial
-    else: 
-        return 404, {'msg': 'There are no featured serials.'}
+def featured_series(request): 
+    series = Serial.objects.filter(is_featured=True)
+    if series:
+        return 200, series
+    return 404, {'msg': 'There are no featured series.'} 
 
 
 
-@Serial_router.get('/{id}/seasons/', response={200: list[SessonOut], 404: MessageOut})
-def list_seasons(request,id: UUID4):
-    seasons=Season.objects.filter(id=id) 
-    if seasons:
+@Serial_router.get('/{id}/season', response={200: list[SeasonOut],404: MessageOut})
+def get_series_season(request, serial_id: UUID4):
+    try:
+        seasons=Season.objects.filter(serial_id=serial_id)
         return 200, seasons
-    else: 
-        return 404, {'msg': 'There are no season serials.'}
+    except Season.DoesNotExist:
+        return 404, {'msg': 'There is no season with that id series.'}
 
 
 
-@Serial_router.get('/{id}/seasons/episodes', response={200: list[SessonOut], 404: MessageOut})
-def list_seasons(request,id: UUID4):
-    seasons=Season.objects.filter(id=id) 
-    if seasons:
-        return 200, seasons
-    else: 
-        return 404, {'msg': 'There are no season serials.'}
-
-
-
-@Serial_router.get('/{id}/seasons/episodes/{id_episodes}', response={200: list[EpisodesOut], 404: MessageOut})
-def list_episode(request,id: UUID4):
-    episode=Episode.objects.filter(id=id) 
+@Serial_router.get('/{id}/seasons/episodes', response={200: list[EpisodesOut], 404: MessageOut})
+def list_seasons(request,season_id: UUID4,):
+    episode=Episode.objects.all()
     if episode:
         return 200, episode
-    else:  
-        return 404, {'msg': 'There are no Episode  serials.'}
+    else: 
+        return 404, {'msg': 'There are no season serials.'}
+
+
+@Serial_router.get('/{id}/seasons/episodes/{episodes_id}', response={200: list[EpisodesOut], 404: MessageOut})
+def list_seasons(request,episode_id: UUID4,):
+    episode=Episode.objects.filter(id=id)
+    if episode:
+        return 200, episode
+    else: 
+        return 404, {'msg': 'There are no season serials.'}
+
 
 
 
