@@ -1,5 +1,6 @@
 from ninja import Router
-
+from pydantic.types import UUID4
+from account.authorization import TokenAuthentication
 from movies.models import Category
 from movies.schemas.categories import CategoryOut
 from movies.schemas.general import MessageOut
@@ -13,3 +14,12 @@ def list_categories(request):
     if categories:
         return 200, categories
     return 404, {'msg': "There are no categories yet."}
+
+@categories_controller.get('/{id}', response={200: CategoryOut, 404: MessageOut})
+def get_categoris(request, id: UUID4,name :str):
+    try:
+        catogories =Category.objects.get(id=id)
+        return 200, catogories
+    except Category.DoesNotExist:
+        return 404, {'msg': 'There is no catogories with that id.'}
+
