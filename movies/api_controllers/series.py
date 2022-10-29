@@ -16,9 +16,9 @@ def list_movies(request):
         return 200, series
     return 404, {'msg': 'There are no series yet.'}
 @series_controller.get('/{id}', response={200: SeriesOut, 404: MessageOut})
-def get_serial_id(request, id: UUID4):
+def get_serias(request, id: UUID4):
     try:
-        serial = Serial.objects.get(id=id)
+        serias = Serial.objects.get(id=id)
         return 200, serial
     except Serial.DoesNotExist:
         return 404, {'msg': 'There is no serial with that id.'}
