@@ -13,3 +13,11 @@ def list_categories(request):
     if categories:
         return 200, categories
     return 404, {'msg': "There are no categories yet."}
+
+@categories_controller.get('', response={200: CategoryOut, 404: MessageOut})
+def get_categories(request, id: UUID4):
+  try:
+    categories = Category.object.get(id = id)
+    return 200, categories
+  except Category.DoesNotExit:
+      return 404, {'msg': 'there is no categories with that id.'}
